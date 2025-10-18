@@ -127,12 +127,12 @@ A huge thanks to HARSH MISTRY — Google Student Ambassador at ADIT — for crea
           >
             📥 Download Certificate
           </button>
-          <button
+          {/* <button
               onClick={shareLinkedIn}
               className=" w-full border-2 border-blue-400 text-blue-600 hover:bg-green-50 py-3 rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200"
             >
                Share on Linkedin
-            </button>
+            </button> */}
 
           <button
             onClick={tryAgain}
