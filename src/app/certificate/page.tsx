@@ -1,8 +1,10 @@
 'use client'
+export const dynamic = 'force-dynamic'
+
 import MobileGuard from '../../components/MobileGuard'
 import CertificateCard from '../../components/CertificateCard'
 
-export default function CertificatePage(){
+export default function CertificatePage() {
   return (
     <MobileGuard>
       <CertificateCard template={'/cert-template.jpg'} />
