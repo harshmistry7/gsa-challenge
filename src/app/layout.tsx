@@ -1,11 +1,37 @@
+// app/layout.tsx
 import './globals.css'
 import MobileGuard from '@/components/MobileGuard'
 import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
+import { Analytics } from "@vercel/analytics/next"
 
 export const metadata = {
   title: 'Gemini Festive Challenge',
   description: '🎯 Complete 5 fun AI-powered tasks and unlock your achievement!',
+  openGraph: {
+    title: 'Gemini Festive Challenge',
+    description: '🎯 Complete 5 fun AI-powered tasks and unlock your achievement!',
+    url: 'https://gsa-challenge.vercel.app/', // Replace with your live URL
+    siteName: 'Gemini Festive Challenge',
+    author: 'Harsh Mistry',
+    images: [
+      {
+        url: 'https://gsa-challenge.vercel.app/og-image.jpg', // OG image for preview
+        width: 1200,
+        height: 630,
+        alt: 'Gemini Festive Challenge Preview',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Gemini Festive Challenge',
+    description: '🎯 Complete 5 fun AI-powered tasks and unlock your achievement!',
+    site: '@yourTwitterHandle', // optional
+    creator: '@yourTwitterHandle', // optional
+    images: ['https://gsa-challenge.vercel.app/og-image.jpg'], // same OG image
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -17,12 +43,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Main Content */}
         <main className="flex-grow flex items-center justify-center pt-[var(--header-height,4rem)]">
-          {/* Add top padding equal to header height */}
           <MobileGuard>{children}</MobileGuard>
         </main>
 
         {/* Footer */}
         <AppFooter />
+        <Analytics />
       </body>
     </html>
   )
