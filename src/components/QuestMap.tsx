@@ -1,90 +1,127 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import LevelCard from './LevelCard'
-import ProgressBar from './ProgressBar'
-import { PROMPTS } from '@/data/prompt'
-import confetti from 'canvas-confetti'
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import LevelCard from "./LevelCard";
+import ProgressBar from "./ProgressBar";
+import { PROMPTS } from "@/data/prompt";
+import confetti from "canvas-confetti";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 export default function QuestMap() {
-  const [progress, setProgress] = useState<boolean[]>(Array(PROMPTS.length).fill(false))
-  const [name, setName] = useState<string>('')
-  const router = useRouter()
+  const [progress, setProgress] = useState<boolean[]>(
+    Array(PROMPTS.length).fill(false)
+  );
+  const [name, setName] = useState<string>("");
+  const [showModal, setShowModal] = useState<boolean>(true); // Show modal immediately
+  const router = useRouter();
 
   /** Load student name and progress from localStorage */
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (typeof window === "undefined") return;
 
-    const storedName = localStorage.getItem('g5_name') || ''
-    setName(storedName.replace(/^"|"$/g, ''))
+    const storedName = localStorage.getItem("g5_name") || "";
+    setName(storedName.replace(/^"|"$/g, ""));
 
-    const storedProgress = localStorage.getItem('g5_progress')
+    const storedProgress = localStorage.getItem("g5_progress");
     if (storedProgress) {
       try {
-        const parsed = JSON.parse(storedProgress)
-        if (Array.isArray(parsed)) setProgress(parsed)
+        const parsed = JSON.parse(storedProgress);
+        if (Array.isArray(parsed)) setProgress(parsed);
       } catch {
-        setProgress(Array(PROMPTS.length).fill(false))
-        localStorage.setItem('g5_progress', JSON.stringify(Array(PROMPTS.length).fill(false)))
+        setProgress(Array(PROMPTS.length).fill(false));
+        localStorage.setItem(
+          "g5_progress",
+          JSON.stringify(Array(PROMPTS.length).fill(false))
+        );
       }
     }
-  }, [])
+  }, []);
 
   /** Persist progress and redirect when all levels are completed */
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('g5_progress', JSON.stringify(progress))
+    if (typeof window !== "undefined") {
+      localStorage.setItem("g5_progress", JSON.stringify(progress));
     }
 
     if (progress.every(Boolean)) {
-      // Redirect after 2 seconds
       const timer = setTimeout(() => {
-        router.push('/certificate')
-      }, 2000)
-      return () => clearTimeout(timer)
+        router.push("/certificate");
+      }, 2000);
+      return () => clearTimeout(timer);
     }
-  }, [progress, router])
+  }, [progress, router]);
 
   /** Mark a level as completed and trigger confetti */
   const handleLevelComplete = (idx: number) => {
     if (!progress[idx]) {
-      const updated = [...progress]
-      updated[idx] = true
-      setProgress(updated)
+      const updated = [...progress];
+      updated[idx] = true;
+      setProgress(updated);
 
-      // Confetti effect
       confetti({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#3B82F6', '#8B5CF6', '#EC4899']
-      })
+        colors: ["#3B82F6", "#8B5CF6", "#EC4899"],
+      });
     }
-  }
+  };
 
   /** Determine the status of each level */
-  const getStatus = (idx: number): 'locked' | 'unlocked' | 'completed' => {
-    if (progress[idx]) return 'completed'
-    if (idx === 0 || progress[idx - 1]) return 'unlocked'
-    return 'locked'
-  }
+  const getStatus = (idx: number): "locked" | "unlocked" | "completed" => {
+    if (progress[idx]) return "completed";
+    if (idx === 0 || progress[idx - 1]) return "unlocked";
+    return "locked";
+  };
 
-  const completedCount = progress.filter(Boolean).length
+  const completedCount = progress.filter(Boolean).length;
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-start py-6 px-4 space-y-6 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-      
+      {/* Modal Popup */}
+      {/* Modal Popup */}
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent className="min-w-80  mx-auto rounded-xl bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 border border-purple-200 shadow-lg p-6">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-gray-800">
+              📝 Important!
+            </DialogTitle>
+            <DialogDescription className="text-gray-700 mt-2">
+              Please let each prompt fully run and generate its outcome to
+              receive your reward. Skipping or closing too early may prevent
+              completion.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-4">
+            <Button variant="default" onClick={() => setShowModal(false)}>
+              Got it!
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Header */}
       <header className="w-full text-center space-y-3">
         <h2 className="text-3xl font-bold text-gray-800">
-          Welcome, {name || 'Explorer'}! 👋
+          Welcome, {name || "Explorer"}! 👋
         </h2>
         <p className="text-md text-gray-600">
           Complete all quests to earn your certificate
         </p>
         <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-sm w-full max-w-md mx-auto">
-          <ProgressBar currentStep={completedCount} totalSteps={PROMPTS.length} />
+          <ProgressBar
+            currentStep={completedCount}
+            totalSteps={PROMPTS.length}
+          />
         </div>
       </header>
 
@@ -107,10 +144,14 @@ export default function QuestMap() {
       {completedCount === PROMPTS.length && (
         <div className="text-center py-6">
           <div className="text-4xl mb-2">🎉</div>
-          <h2 className="text-lg font-bold text-green-600 mb-1">Congratulations!</h2>
-          <p className="text-sm text-gray-600">Redirecting to your certificate...</p>
+          <h2 className="text-lg font-bold text-green-600 mb-1">
+            Congratulations!
+          </h2>
+          <p className="text-sm text-gray-600">
+            Redirecting to your certificate...
+          </p>
         </div>
       )}
     </div>
-  )
+  );
 }

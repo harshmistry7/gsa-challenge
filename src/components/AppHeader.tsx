@@ -5,9 +5,9 @@ import Image from 'next/image'
 export default function AppHeader() {
   return (
     <header className="w-full fixed top-0 left-0 z-50 bg-white/70 backdrop-blur-md border-b border-white/30 shadow-sm">
-      <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div className=" mx-auto px-4 py-3 flex items-center justify-between">
         {/* Left: Logo and App Name */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 justify-start">
           <Image
             src="/logo.png"
             alt="Gemini Logo"
@@ -15,9 +15,14 @@ export default function AppHeader() {
             height={40}
             className="rounded-full"
           />
-          <h1 className="text-lg drop-shadow-sm font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-lg drop-shadow-sm font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent whitespace-nowrap">
             Gemini Festive Challenge
           </h1>
+        </div>
+
+        {/* Right: Placeholder for future items */}
+        <div className="hidden md:flex items-center gap-3">
+          {/* Add buttons or links here if needed */}
         </div>
       </div>
     </header>

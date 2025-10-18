@@ -28,8 +28,8 @@ export default function MobileGuard({ children }: { children: React.ReactNode })
   if (isMobile) return <>{children}</>
 
   return (
-    <div className="h-screen w-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center">
-      <div className="w-[95%] max-w-lg h-[90vh] bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 flex flex-col justify-between border border-gray-100 overflow-hidden">
+    <div className="flex flex-col items-center justify-center w-full h-full">
+      <div className="w-[90%] max-w-md sm:max-w-lg md:max-w-xl h-[90%] bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-6 flex flex-col justify-between border border-gray-100 overflow-hidden">
         
         {/* Header */}
         <div className="text-center">
@@ -55,7 +55,7 @@ export default function MobileGuard({ children }: { children: React.ReactNode })
           <h2 className="text-2xl font-semibold text-gray-800 mb-2">
             Mobile-Only Experience
           </h2>
-          <p className="text-gray-600 text-base px-6 leading-relaxed">
+          <p className="text-gray-600 text-base px-4 sm:px-6 leading-relaxed">
             This experience is designed exclusively for mobile devices.  
             Please scan the QR code or open this link on your phone.
           </p>
@@ -69,7 +69,7 @@ export default function MobileGuard({ children }: { children: React.ReactNode })
               <img
                 src={qr}
                 alt="QR Code to open on mobile"
-                className="w-44 h-44 mx-auto"
+                className="w-40 sm:w-44 md:w-48 h-40 sm:h-44 md:h-48 mx-auto"
               />
             </div>
             <p className="text-sm text-gray-500 mt-2">
@@ -81,14 +81,11 @@ export default function MobileGuard({ children }: { children: React.ReactNode })
         {/* Footer */}
         <div className="text-center">
           {currentUrl && (
-            <div className="p-3 bg-gray-50 rounded-lg border border-gray-100 mx-6 mb-3">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-100 mx-4 sm:mx-6">
               <p className="text-xs text-gray-400 mb-0.5">Current URL:</p>
               <p className="text-xs text-gray-600 break-all">{currentUrl}</p>
             </div>
           )}
-          <p className="text-sm text-gray-500 font-medium">
-            © GSA ADIT | Harsh Mistry
-          </p>
         </div>
       </div>
     </div>
