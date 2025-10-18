@@ -29,12 +29,11 @@ export default function MobileGuard({ children }: { children: React.ReactNode })
 
   return (
     <div className="h-screen w-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center">
-      {/* Centered Card */}
       <div className="w-[95%] max-w-lg h-[90vh] bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 flex flex-col justify-between border border-gray-100 overflow-hidden">
+        
         {/* Header */}
         <div className="text-center">
-          {/* Logo inside circle */}
-          <div className="relative w-24 h-24 mx-auto mb-4 rounded-full  flex items-center justify-center shadow-md">
+          <div className="relative w-24 h-24 mx-auto mb-4 rounded-full flex items-center justify-center shadow-md">
             <div className="relative w-16 h-16">
               <Image
                 src="/logo.png"
@@ -62,10 +61,11 @@ export default function MobileGuard({ children }: { children: React.ReactNode })
           </p>
         </div>
 
-        {/* QR Section */}
+        {/* QR Code */}
         {qr && (
           <div className="flex flex-col items-center">
             <div className="bg-white p-4 rounded-2xl shadow-lg border border-gray-200">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={qr}
                 alt="QR Code to open on mobile"
@@ -78,7 +78,7 @@ export default function MobileGuard({ children }: { children: React.ReactNode })
           </div>
         )}
 
-        {/* Footer Info */}
+        {/* Footer */}
         <div className="text-center">
           {currentUrl && (
             <div className="p-3 bg-gray-50 rounded-lg border border-gray-100 mx-6 mb-3">

@@ -2,13 +2,18 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import Image from 'next/image'
 import { useLocalStorage } from '../lib/useLocalStorage'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-export default function WelcomeCard() {
+export interface WelcomeCardProps {
+  logo?: string
+}
+
+export default function WelcomeCard({ logo = '/logo.png' }: WelcomeCardProps) {
   const router = useRouter()
   const [name, setName] = useLocalStorage('g5_name', '')
   const [localName, setLocalName] = useState(name || '')
@@ -26,10 +31,16 @@ export default function WelcomeCard() {
           ? JSON.parse(localStorage.getItem('g5_progress') || '[]')
           : []
       if (!progress || progress.length === 0) {
-        localStorage.setItem('g5_progress', JSON.stringify([false, false, false, false, false]))
+        localStorage.setItem(
+          'g5_progress',
+          JSON.stringify([false, false, false, false, false])
+        )
       }
     } catch (e) {
-      localStorage.setItem('g5_progress', JSON.stringify([false, false, false, false, false]))
+      localStorage.setItem(
+        'g5_progress',
+        JSON.stringify([false, false, false, false, false])
+      )
     }
 
     setTimeout(() => {
@@ -43,7 +54,15 @@ export default function WelcomeCard() {
         {/* Logo */}
         <div className="flex flex-col items-center mb-6">
           <div className="rounded-full p-2 bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg">
-            <img src="/logo.png" alt="logo" className="w-20 h-20 rounded-full bg-white p-1" />
+            <div className="relative w-20 h-20 rounded-full bg-white p-1">
+              <Image
+                src={logo}
+                alt="logo"
+                fill
+                className="object-contain rounded-full"
+                priority
+              />
+            </div>
           </div>
         </div>
 

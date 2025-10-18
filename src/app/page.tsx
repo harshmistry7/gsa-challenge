@@ -1,13 +1,16 @@
 'use client'
+
 import MobileGuard from '../components/MobileGuard'
-import WelcomeCard from '../components/WelcomeCard'
+import WelcomeCard, { WelcomeCardProps } from '../components/WelcomeCard'
 
-const AnyWelcomeCard = WelcomeCard as any
+export default function Home() {
+  const welcomeCardProps: WelcomeCardProps = {
+    logo: '/logo.png',
+  }
 
-export default function Home(){
   return (
     <MobileGuard>
-      <AnyWelcomeCard logo={'/logo.png'} />
+      <WelcomeCard {...welcomeCardProps} />
     </MobileGuard>
   )
 }

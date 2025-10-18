@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
 import CertificateEditor from "./CertificateEditor";
 
 interface CertificateCardProps {
@@ -12,97 +13,67 @@ export default function CertificateCard({ template }: CertificateCardProps) {
   const downloadFunctionRef = useRef<(() => string | null) | null>(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedName = localStorage.getItem("g5_name") || "";
-      // Remove any surrounding double quotes
-      const cleanName = storedName.replace(/^"|"$/g, "");
-      setName(cleanName);
-    }
+    if (typeof window === "undefined") return;
+    const storedName = (localStorage.getItem("g5_name") || "").replace(/^"|"$/g, "");
+    setName(storedName);
   }, []);
 
-  // Handle download function from CertificateEditor
-  const handleDownloadFunction = (getDataUrlFn: () => string | null) => {
-    downloadFunctionRef.current = getDataUrlFn;
+  const handleDownloadFunction = (fn: () => string | null) => {
+    downloadFunctionRef.current = fn;
   };
 
-  async function download() {
-    if (!downloadFunctionRef.current) {
-      alert("Certificate is still loading. Please wait.");
-      return;
-    }
+  const download = () => {
+    const dataUrl = downloadFunctionRef.current?.();
+    if (!dataUrl) return alert("Certificate is still loading. Please wait.");
+    const a = document.createElement("a");
+    a.href = dataUrl;
+    a.download = `${name || "user"}_gsa_certificate.png`;
+    a.click();
+  };
 
-    try {
-      const dataUrl = downloadFunctionRef.current();
-      if (!dataUrl) {
-        alert("Unable to generate certificate. Please try again.");
-        return;
-      }
-
-      const a = document.createElement("a");
-      a.href = dataUrl;
-      a.download = `${name || "user"}_gsa_certificate.jpg`;
-      a.click();
-    } catch (e) {
-      console.error("Download error:", e);
-      alert("Unable to generate image. Please try again.");
-    }
-  }
-
-  function shareWhatsApp() {
+  const shareWhatsApp = () => {
     if (typeof window === "undefined") return;
     const url = encodeURIComponent(window.location.href);
     const text = encodeURIComponent(
-      `🎉 I just completed the Gemini 5-Step Festive Challenge and earned my certificate as a Certified Gemini Festive Explorer! 🏆\n\nCheck it out: ${url}`
+      `🎉 I just completed the Gemini 5-Step Festive Challenge and earned my certificate! 🏆\n\nCheck it out: ${url}`
     );
     window.open(`https://wa.me/?text=${text}`, "_blank");
-  }
+  };
 
-  function shareInstagram() {
+  const shareInstagram = () => {
     const caption = `🎉 Just completed the Gemini 5-Step Festive Challenge! 🏆 #GeminiFestiveChallenge #AIChallenge #Achievement`;
     navigator.clipboard.writeText(caption);
     alert("✨ Caption copied! Paste it on Instagram when sharing your image.");
-  }
+  };
 
-  function tryAgain() {
+  const tryAgain = () => {
     if (typeof window === "undefined") return;
     localStorage.removeItem("g5_progress");
     localStorage.removeItem("g5_name");
     window.location.href = "/";
-  }
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start pt-10 pb-10 px-4">
       <div className="w-full max-w-sm space-y-6">
-        {/* Header Section */}
         <div className="text-center bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200 shadow-lg">
           <div className="text-5xl mb-3 animate-bounce">🏆</div>
           <h2 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-2">
             Quest Complete!
           </h2>
-          <p className="text-green-700 text-sm font-medium truncate">
-            Congratulations, {name || "Explorer"}!
-          </p>
-          <p className="text-green-600 text-xs mt-1">
-            You've successfully completed all 5 AI-powered challenges
-          </p>
+          <p className="text-green-700 text-sm font-medium truncate">Congratulations, {name || "Explorer"}!</p>
+          <p className="text-green-600 text-xs mt-1">You've successfully completed all 5 AI-powered challenges</p>
         </div>
 
-        {/* Certificate Preview */}
         <div className="p-6 bg-white/90 backdrop-blur-sm border-0 shadow-xl rounded-2xl">
           <div className="text-center">
             <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center justify-center gap-2">
               <span>📜</span> Your Achievement Certificate
             </h3>
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-4 rounded-xl border-2 border-dashed border-blue-200 overflow-hidden">
-              <CertificateEditor
-                template={template}
-                name={name}
-                onDownload={handleDownloadFunction}
-              />
+              <CertificateEditor template={template} name={name} onDownload={handleDownloadFunction} />
             </div>
-            <p className="text-xs text-gray-500 mt-3">
-              🎖️ Certified Gemini Festive Explorer
-            </p>
+            <p className="text-xs text-gray-500 mt-3">🎖️ Certified Gemini Festive Explorer</p>
           </div>
         </div>
 
