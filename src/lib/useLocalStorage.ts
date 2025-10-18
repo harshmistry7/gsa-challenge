@@ -1,12 +1,21 @@
 'use client'
-import { useState, useEffect } from 'react'
 
-export function useLocalStorage(key, initialValue) {
-  const [state, setState] = useState(() => {
+import { useState, useEffect, Dispatch, SetStateAction } from 'react'
+
+/**
+ * useLocalStorage hook
+ * @param key - localStorage key
+ * @param initialValue - initial value if key does not exist
+ * @returns [value, setValue] tuple
+ */
+export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
+  const [state, setState] = useState<T>(() => {
     try {
-      const item = typeof window !== 'undefined' ? localStorage.getItem(key) : null
+      if (typeof window === 'undefined') return initialValue
+      const item = localStorage.getItem(key)
       return item ? JSON.parse(item) : initialValue
     } catch (e) {
+      console.error(`useLocalStorage: Error reading key "${key}":`, e)
       return initialValue
     }
   })
@@ -16,7 +25,9 @@ export function useLocalStorage(key, initialValue) {
       if (typeof window !== 'undefined') {
         localStorage.setItem(key, JSON.stringify(state))
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error(`useLocalStorage: Error setting key "${key}":`, e)
+    }
   }, [key, state])
 
   return [state, setState]
