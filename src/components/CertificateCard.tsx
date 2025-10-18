@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
 import CertificateEditor from "./CertificateEditor";
 
 interface CertificateCardProps {
@@ -62,7 +61,7 @@ export default function CertificateCard({ template }: CertificateCardProps) {
             Quest Complete!
           </h2>
           <p className="text-green-700 text-sm font-medium truncate">Congratulations, {name || "Explorer"}!</p>
-          <p className="text-green-600 text-xs mt-1">You've successfully completed all 5 AI-powered challenges</p>
+          <p className="text-green-600 text-xs mt-1">You&apos;ve successfully completed all 5 AI-powered challenges</p>
         </div>
 
         <div className="p-6 bg-white/90 backdrop-blur-sm border-0 shadow-xl rounded-2xl">
