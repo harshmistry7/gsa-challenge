@@ -1,40 +1,48 @@
 // app/layout.tsx
-import './globals.css'
-import MobileGuard from '@/components/MobileGuard'
-import AppHeader from '@/components/AppHeader'
-import AppFooter from '@/components/AppFooter'
-import { Analytics } from "@vercel/analytics/next"
+import "./globals.css";
+import MobileGuard from "@/components/MobileGuard";
+import AppHeader from "@/components/AppHeader";
+import AppFooter from "@/components/AppFooter";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata = {
-  title: 'Gemini Festive Challenge',
-  description: '🎯 Complete 5 fun AI-powered tasks and unlock your achievement!',
+  title: "Gemini Festive Challenge",
+  description:
+    "🎯 Complete 5 fun AI-powered tasks and unlock your achievement!",
   openGraph: {
-    title: 'Gemini Festive Challenge',
-    description: '🎯 Complete 5 fun AI-powered tasks and unlock your achievement!',
-    url: 'https://gsa-challenge.vercel.app/', // Replace with your live URL
-    siteName: 'Gemini Festive Challenge',
-    author: 'Harsh Mistry',
+    title: "Gemini Festive Challenge",
+    description:
+      "🎯 Complete 5 fun AI-powered tasks and unlock your achievement!",
+    url: "https://gsa-challenge.vercel.app/", 
+    siteName: "Gemini Festive Challenge",
+    author: "Harsh Mistry",
     images: [
       {
-        url: 'https://gsa-challenge.vercel.app/og-image.jpg', // OG image for preview
+        url: "https://gsa-challenge.vercel.app/og-image.jpg", 
         width: 1200,
         height: 630,
-        alt: 'Gemini Festive Challenge Preview',
+        alt: "Gemini Festive Challenge Preview",
       },
     ],
-    type: 'website',
+    type: "website",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Gemini Festive Challenge',
-    description: '🎯 Complete 5 fun AI-powered tasks and unlock your achievement!',
-    site: '@yourTwitterHandle', // optional
-    creator: '@yourTwitterHandle', // optional
-    images: ['https://gsa-challenge.vercel.app/og-image.jpg'], // same OG image
+    card: "summary_large_image",
+    title: "Gemini Festive Challenge",
+    description:
+      "🎯 Complete 5 fun AI-powered tasks and unlock your achievement!",
+    site: "@yourTwitterHandle", // optional
+    creator: "@yourTwitterHandle", // optional
+    images: ["https://gsa-challenge.vercel.app/og-image.jpg"], // same OG image
   },
-}
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body className="font-inter text-gray-800 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col">
@@ -49,7 +57,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Footer */}
         <AppFooter />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
-  )
+  );
 }
+
+
